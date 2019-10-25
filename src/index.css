@@ -15,12 +15,38 @@ button:disabled {
   opacity: 0.5;
 }
 
+.messageContainer {
+  display: flex;
+}
+
+.messageAvatar {
+  width: 120px;
+}
+
 .messageRow {
   padding: 6px;
   display: flex;
-  align-items: space-between; 
+  border-bottom: 1px solid #999;
 }
 
 .messageCell {
   padding: 6px;
+}
+
+.messageDate {
+  width: 200px;
+}
+
+.messageEmail {
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.messageText {
+  width: 400px;
+}
+
+.messageName {
+  width: 200px;
 }

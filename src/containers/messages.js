@@ -6,16 +6,26 @@ class Messages extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
-    }
+      messages: [],
+      showEmailIndex: -1, // -1 means nowhere
+    };
+    this.onMouseEvent = this.onMouseEvent.bind(this);
   }
 
   /**
    * Get data and save in state
    */
-  async componentDidMount() {
+  componentDidMount() {
     const aggregatedDataSet = getAggregatedDataSet(this.props);
     this.setState({ messages: aggregatedDataSet })
+  }
+
+  /**
+   * Fired on mouse in of message
+   * @param {*} event
+   */
+  onMouseEvent(index) {
+    this.setState({ showEmailIndex: index });
   }
 
   /**
@@ -25,32 +35,35 @@ class Messages extends Component {
   formatDate(date) {
     const temp = new Date(date).getTime();
     const options = {
-      weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
-      hour: 'numeric', minute: 'numeric', second: 'numeric',
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
       timeZone: 'UTC',
-
-    }
+    };
     return new Intl.DateTimeFormat('en-GB', options).format(temp);
   }
 
   render() {
     return (
-      <div style={{ width: '100%' }}>
+      <div>
         {this.state.messages.map((message, index) => (
-          <div>
 
-            <div key={index} className="messageRow">
-              <div className="messageCell">{this.formatDate(message.timestamp)}</div>
-              <div className="messageCell" style={{ minHeight: '100px', minWidth: '100px' }}>
-                {message.avatar &&
-                  <img alt="none" src={message.avatar}></img>
-                }
-              </div>
-              <div className="messageCell">{message.message}</div>
-              <div className="messageCell">{message.fullName}</div>
-
+          <div key={index} className="messageRow">
+            <div className="messageCell messageDate">{this.formatDate(message.timestamp)}</div>
+            <div className="messageAvatar">{message.avatar && <img alt="none" src={message.avatar} />}</div>
+            <div
+              className="messageCell messageText"
+              onMouseEnter={() => this.onMouseEvent(index)}
+              onMouseLeave={() => this.onMouseEvent(-1)}
+            >
+              {message.message}
+              {this.state.showEmailIndex === index && <div className="messageEmail"> Contact: {message.email}</div>}
             </div>
-            <hr />
+            <div className="messageCell messageName">{message.fullName}</div>
+            <br />
           </div>
 
         ))}

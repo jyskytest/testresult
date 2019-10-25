@@ -6,7 +6,8 @@ import Home from './home';
 it('renders correctly', () => {
   const props = {
     messages: [],
-    loadMessages: () => {},
+    loadMembers: () => { },
+    loadMessages: () => { },
   };
   const tree = shallow(<Home.WrappedComponent {...props} />);
   expect(tree).toMatchSnapshot();
